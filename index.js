@@ -91,7 +91,7 @@ app.get('/login', (req, res) => {
     if (req.session.authenticated) {
         res.redirect('/profile')
     } else {
-        res.sendFile(__dirname + '/public/login.html')
+        res.sendFile(__dirname + '/public/views/login.html')
     }
 })
 
