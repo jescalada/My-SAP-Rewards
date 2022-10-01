@@ -26,55 +26,66 @@ app.use(bodyparser.urlencoded({
 // Tells our app to keep in mind the folder called "public", where we have various assets
 app.use(express.static(__dirname + '/public'))
 
-const pokemonSchema = new mongoose.Schema({
-    name: String,
-    types: [String],
-    abilities: [String],
-    id: Number,
-    stats: [Object],
-    sprite: String
-}, {
-    collection: 'pokemon'
-})
+// const pokemonSchema = new mongoose.Schema({
+//     name: String,
+//     types: [String],
+//     abilities: [String],
+//     id: Number,
+//     stats: [Object],
+//     sprite: String
+// }, {
+//     collection: 'pokemon'
+// })
 
-const pokemonModel = mongoose.model("pokemon", pokemonSchema);
+// const pokemonModel = mongoose.model("pokemon", pokemonSchema);
 
 const usersSchema = new mongoose.Schema({
-    user_id: String,
+    user_id: Number,
     username: String,
     password: String,
-    cart: [Object],
-    past_orders: [
-        [Object]
-    ],
-    timeline: [Object],
-    game_timeline: [Object],
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    profile_desc: String,
+    profile_img_url: String,
+    full_name: String,
+    points: Number,
+    days_worked: Number,
+    current_location: String,
+    calendar: [Object],
+    rewards_pending: [Object],
+    rewards_redeemed: [Object],
 }, {
     collection: 'users'
 })
 
 const usersModel = mongoose.model("users", usersSchema);
 
-// mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/pokemon-db?retryWrites=true&w=majority", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// });
+mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/My-SAP-Rewards?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 app.get('/', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/views/dashboard.html')
+    res.sendFile(__dirname + '/public/landing.html')
 })
 
-app.get('/schedule', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/views/schedule.html')
+app.get('/cart', authenticate, (req, res) => {
+    res.sendFile(__dirname + '/public/cart.html')
+})
+
+app.get('/search', authenticate, (req, res) => {
+    res.sendFile(__dirname + '/public/search.html')
 })
 
 app.get('/profile', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/views/profile.html')
+    res.sendFile(__dirname + '/public/profile.html')
 })
 
 app.get('/admin', authenticateAndCheckIfAdmin, (req, res) => {
-    res.sendFile(__dirname + '/public/views/admin.html')
+    res.sendFile(__dirname + '/public/admin.html')
+})
+
+app.get('/game', authenticate, (req, res) => {
+    res.sendFile(__dirname + '/public/game.html')
 })
 
 // This is a get route that does not need the middleware authenticator (it would make an infinite loop)
@@ -83,7 +94,7 @@ app.get('/login', (req, res) => {
     if (req.session.authenticated) {
         res.redirect('/profile')
     } else {
-        res.sendFile(__dirname + '/public/login.html')
+        res.sendFile(__dirname + '/public/views/login.html')
     }
 })
 
@@ -142,7 +153,7 @@ app.post('/register', async (req, res) => {
             })
         }
     })
-})                                                                                                                  
+})
 
 async function authenticateLogin(username, password) {
     const users = await usersModel.find({
