@@ -26,40 +26,43 @@ app.use(bodyparser.urlencoded({
 // Tells our app to keep in mind the folder called "public", where we have various assets
 app.use(express.static(__dirname + '/public'))
 
-const pokemonSchema = new mongoose.Schema({
-    name: String,
-    types: [String],
-    abilities: [String],
-    id: Number,
-    stats: [Object],
-    sprite: String
-}, {
-    collection: 'pokemon'
-})
+// const pokemonSchema = new mongoose.Schema({
+//     name: String,
+//     types: [String],
+//     abilities: [String],
+//     id: Number,
+//     stats: [Object],
+//     sprite: String
+// }, {
+//     collection: 'pokemon'
+// })
 
-const pokemonModel = mongoose.model("pokemon", pokemonSchema);
+// const pokemonModel = mongoose.model("pokemon", pokemonSchema);
 
 const usersSchema = new mongoose.Schema({
-    user_id: String,
+    user_id: Number,
     username: String,
     password: String,
-    cart: [Object],
-    past_orders: [
-        [Object]
-    ],
-    timeline: [Object],
-    game_timeline: [Object],
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    profile_desc: String,
+    profile_img_url: String,
+    full_name: String,
+    points: Number,
+    days_worked: Number,
+    current_location: String,
+    calendar: [Object],
+    rewards_pending: [Object],
+    rewards_redeemed: [Object],
 }, {
     collection: 'users'
 })
 
 const usersModel = mongoose.model("users", usersSchema);
 
-// mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/pokemon-db?retryWrites=true&w=majority", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// });
+mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/My-SAP-Rewards?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 app.get('/', authenticate, (req, res) => {
     res.sendFile(__dirname + '/public/landing.html')
