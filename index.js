@@ -26,19 +26,6 @@ app.use(bodyparser.urlencoded({
 // Tells our app to keep in mind the folder called "public", where we have various assets
 app.use(express.static(__dirname + '/public'))
 
-// const pokemonSchema = new mongoose.Schema({
-//     name: String,
-//     types: [String],
-//     abilities: [String],
-//     id: Number,
-//     stats: [Object],
-//     sprite: String
-// }, {
-//     collection: 'pokemon'
-// })
-
-// const pokemonModel = mongoose.model("pokemon", pokemonSchema);
-
 const usersSchema = new mongoose.Schema({
     user_id: Number,
     username: String,
@@ -58,6 +45,28 @@ const usersSchema = new mongoose.Schema({
 })
 
 const usersModel = mongoose.model("users", usersSchema);
+
+
+const rewardsSchema = new mongoose.Schema({
+    reward_name: String,
+    reward_desc: String,
+    reward_img_url: String,
+    reward_cost: Number
+}, {
+    collection: 'rewards'
+})
+
+const rewardsModel = mongoose.model("rewards", rewardsSchema);
+
+const calendarDaysSchema = new mongoose.Schema({
+    date: Date,
+    location: String,
+    user_id: [Number]
+}, {
+    collection: 'calendar_days'
+})
+
+const calendarDaysModel = mongoose.model("calendar_days", calendarDaysSchema);
 
 mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/My-SAP-Rewards?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -161,15 +170,19 @@ async function authenticateLogin(username, password) {
     return users[0]
 }
 
-app.get('/pokemon/:pokemonId', (req, res) => {
-    pokemonModel.find({
-        id: req.params.pokemonId
-    }, function (err, pokemon) {
+app.get('/users/:userId', (req, res) => {
+    usersModel.find({
+        id: req.params.userId
+    }, function (err, user) {
         if (err) {
             console.log("Error " + err)
         }
-        res.json(pokemon)
+        res.json(user)
     });
+})
+
+app.get('/rewards/', async (req, res) => {
+
 })
 
 app.get('/name/:pokemonName', async (req, res) => {
