@@ -9,7 +9,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        transparent: 'transparent',
+      current: 'currentColor',
         brightRed: 'hsl(12, 88%, 59%)',
+        blue: '#0F2540',
       }
     },
   },
