@@ -65,27 +65,19 @@ mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/My-SAP-
 });
 
 app.get('/', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/landing.html')
+    res.sendFile(__dirname + '/public/views/dashboard.html')
 })
 
-app.get('/cart', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/cart.html')
-})
-
-app.get('/search', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/search.html')
+app.get('/schedule', authenticate, (req, res) => {
+    res.sendFile(__dirname + '/public/views/schedule.html')
 })
 
 app.get('/profile', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/profile.html')
+    res.sendFile(__dirname + '/public/views/profile.html')
 })
 
 app.get('/admin', authenticateAndCheckIfAdmin, (req, res) => {
-    res.sendFile(__dirname + '/public/admin.html')
-})
-
-app.get('/game', authenticate, (req, res) => {
-    res.sendFile(__dirname + '/public/game.html')
+    res.sendFile(__dirname + '/public/views/admin.html')
 })
 
 // This is a get route that does not need the middleware authenticator (it would make an infinite loop)
@@ -137,11 +129,17 @@ app.post('/register', async (req, res) => {
     await usersModel.insertMany({
         username: req.body.username,
         password: req.body.password,
-        cart: [],
-        past_orders: [],
+        isAdmin: req.body.isAdmin,
+        profile_desc: "Hello, I'm " + req.body.username,
+        profile_img_url: "", // todo insert default image
+        full_name: "",
+        points: 0,
+        days_worked: 0,
         user_id: userId,
-        timeline: [],
-        isAdmin: req.body.isAdmin
+        current_location: "Nowhere",
+        calendar: [],
+        rewards_pending: [],
+        rewards_redeemed: [],
     }).then((result, err) => {
         if (err) {
             res.json({
