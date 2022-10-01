@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['../views/*.{html,js}'],
+  content: ["public/views/*.{html,js}", "public/views/schedule.html"],
   theme: {
     screens:{
       sm: '480px',
