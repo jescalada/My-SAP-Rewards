@@ -68,6 +68,7 @@ i:hover {
 }
 .container{
   color: white;
+  padding-bottom: 30px;
 }
 .navbar-brand{
   margin-bottom: 10px;
