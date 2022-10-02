@@ -1,6 +1,7 @@
 
 @import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -24,7 +25,6 @@ background-color: #B8D3F2;
 h3{
   color: white;
 }
-
 
 i{
   color: #4895EF;
@@ -106,9 +106,6 @@ header{
 .material-icons.md-light {
   color: rgba(255, 255, 255, 1);
 }
-
-
-
 
 #hover-img {
   height: 55px;
