@@ -184,85 +184,6 @@ app.get('/users/:userId', (req, res) => {
     });
 })
 
-app.get('/name/:pokemonName', async (req, res) => {
-    pokemonModel.find({
-        name: req.params.pokemonName
-    }, async function (err, pokemon) {
-        if (err) {
-            console.log("Error: " + err)
-        }
-        // Writes an entry object to the timeline
-        let entry = {
-            query: `/name/${req.params.pokemonName}`,
-            timestamp: Date.now()
-        }
-
-        await usersModel.updateOne({
-            user_id: req.session.user_id
-        }, {
-            $push: {
-                timeline: { entry }
-            }
-        }).then(() => {
-            res.json(pokemon)
-        })
-    });
-})
-
-app.get('/type/:pokemonType', async (req, res) => {
-    pokemonModel.find({
-        types: {
-            $in: req.params.pokemonType
-        }
-    }, async function (err, pokemon) {
-        if (err) {
-            console.log("Error " + err)
-        }
-        // Writes an entry object to the timeline
-        let entry = {
-            query: `/type/${req.params.pokemonType}`,
-            timestamp: Date.now()
-        }
-        
-        await usersModel.updateOne({
-            user_id: req.session.user_id
-        }, {
-            $push: {
-                timeline: { entry }
-            }
-        }).then(() => {
-            res.json(pokemon)
-        })
-    });
-})
-
-app.get('/ability/:pokemonAbility', async (req, res) => {
-    pokemonModel.find({
-        abilities: {
-            $in: req.params.pokemonAbility
-        }
-    }, async function (err, pokemon) {
-        if (err) {
-            console.log("Error " + err)
-        }
-        // Writes an entry object to the timeline
-        let entry = {
-            query: `/ability/${req.params.pokemonAbility}`,
-            timestamp: Date.now()
-        }
-        
-        await usersModel.updateOne({
-            user_id: req.session.user_id
-        }, {
-            $push: {
-                timeline: { entry }
-            }
-        }).then(() => {
-            res.json(pokemon)
-        })
-    });
-})
-
 app.get('/pendingrewards/:userId', async (req, res) => {
     const user = await usersModel.find({
         user_id: req.params.userId
@@ -287,10 +208,6 @@ app.post('/select', async (req, res) => {
 
 app.post('/loaddate', async (req, res) => {
     res.json(await loadDate(req.body.dateNumber, req.body.location))
-})
-
-app.post('/placeorder', async (req, res) => {
-    res.json(await placeOrder(req.body.userId, req.body.total))
 })
 
 app.listen(port, () => {
@@ -374,75 +291,4 @@ async function loadDate(dateNumber, location) {
     }
 
     return calendarDay[0];
-}
-
-async function addLoss(userId, difficulty, points) {
-    let entry = {
-        message: `Lost on difficulty ${difficulty}! Score: ${points}`,
-        timestamp: Date.now()
-    }
-
-    await usersModel.findOneAndUpdate({
-        user_id: userId
-    }, {
-        $push: {
-            game_timeline: {
-                entry
-            }
-        }
-    }).then(() => {
-        return {
-            success: true
-        }
-    })
-}
-
-async function updateCart(userId, quantity, pokemonId) {
-    await usersModel.findOneAndUpdate({
-        user_id: userId
-    }, {
-        $push: {
-            cart: {
-                quantity: quantity,
-                pokemonId: pokemonId
-            }
-        }
-    }).then(() => {
-        return {
-            success: true
-        }
-    })
-}
-
-async function placeOrder(userId, total) {
-    const user = await usersModel.find({
-        user_id: userId
-    })
-    let cart = user[0].cart
-    
-    // Empties the user's cart
-    await usersModel.updateOne({
-        user_id: userId
-    }, {
-        $set: {
-            cart: []
-        }
-    }, {multi: true})
-
-    // Adds the order info to the user's past_orders array
-    await usersModel.updateOne({
-        user_id: userId
-    }, {
-        $push: {
-            past_orders: {
-                cart: cart,
-                timestamp: Date.now(),
-                total: total
-            }
-        }
-    }).then(() => {
-        return {
-            success: true
-        }
-    })
 }
