@@ -1,6 +1,7 @@
 
 @import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -25,15 +26,11 @@ h3{
   color: white;
 }
 
-
 i{
   color: #4895EF;
   font-size: 3rem;
   text-align: center;
   margin: 0 0.5rem;
-}
-.score{
-  padding: 80px;
 }
 i:hover {
   cursor: pointer;
@@ -52,7 +49,7 @@ i:hover {
   justify-content: center;
 }
 header{
-  background-color: #0F2540;
+  background-color: hsl(213, 62%, 15%);
   text-align: center;
   color: white;
   size: 100px;
@@ -60,7 +57,10 @@ header{
 }
 
 .scoreContainer{
-  flex-direction: row;
+  float:right ;
+}
+.score{
+  padding: 80px;
 }
 
 /* Change the color of links on hover */
@@ -106,9 +106,6 @@ header{
 .material-icons.md-light {
   color: rgba(255, 255, 255, 1);
 }
-
-
-
 
 #hover-img {
   height: 55px;
