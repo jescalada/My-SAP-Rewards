@@ -37,7 +37,7 @@ async function loadRewards() {
         }
     }).then(response => response.json()).then(async (data) => {
         data.forEach(reward => {
-            let canRedeem = reward.reward_cost > getPoints();
+            let canRedeem = reward.reward_cost <= getPoints();
             let element = `
                 <div class="w-full inline-flex rounded-md justify-center" role="group">
                     <button type="button" 

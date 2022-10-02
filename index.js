@@ -184,12 +184,6 @@ app.get('/users/:userId', (req, res) => {
     });
 })
 
-// Returns the whole list of rewards from the database
-app.post('/rewardlist', async (req, res) => {
-    const rewards = await rewardsModel.find({ })
-    return res.json(rewards);
-})
-
 app.get('/name/:pokemonName', async (req, res) => {
     pokemonModel.find({
         name: req.params.pokemonName
@@ -283,12 +277,12 @@ app.get('/redeemedrewards/:userId', async (req, res) => {
     return res.json(user[0].rewards_redeemed);
 })
 
-app.post('/addwin', async (req, res) => {
-    res.json(await addWin(req.body.userId, req.body.difficulty, req.body.score))
+app.post('/redeem', async (req, res) => {
+    res.json(await redeem(req.body.userId, req.body.rewardName, req.body.rewardCost))
 })
 
-app.post('/addloss', async (req, res) => {
-    res.json(await addLoss(req.body.userId, req.body.difficulty, req.body.score))
+app.post('/select', async (req, res) => {
+    res.json(await select(req.body.userId, req.body.rewardName, req.body.rewardCost))
 })
 
 app.post('/addtocart', async (req, res) => {
@@ -337,25 +331,21 @@ app.post('/deleteuser', async (req, res) => {
     }   
 })
 
-async function addWin(userId, difficulty, points) {
-    let entry = {
-        message: `Won on difficulty ${difficulty}! Score: ${points}`,
-        timestamp: Date.now()
-    }
-
-    await usersModel.findOneAndUpdate({
+async function redeem(userId, rewardName, rewardCost) {
+    let reward = await rewardsModel.find({
+        reward_name: rewardName
+    });
+    
+    await usersModel.updateOne({
         user_id: userId
     }, {
+        $inc: {
+            points: rewardCost * -1
+        },
         $push: {
-            game_timeline: {
-                entry
-            }
+            rewards_pending: reward[0]
         }
-    }).then(() => {
-        return {
-            success: true
-        }
-    })
+    });
 }
 
 async function addLoss(userId, difficulty, points) {
