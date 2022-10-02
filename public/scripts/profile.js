@@ -1,29 +1,9 @@
 var userId = getUserId();
 var isAdmin = isAdmin();
 
-// Gets the basic data needed to display a pokemon to the client.
-async function getPokemonBasicDataById(id) {
-    let pokemon = await loadPokemonById(id);
-    let result = {
-        id: pokemon.id,
-        name: pokemon.name,
-        sprite: pokemon.sprite,
-        price: pokemon.price
-    };
-    return result;
-}
-
-async function loadPokemonById(pokemonId) {
-    try {
-        const pokemon = await $.get(`/pokemon/${pokemonId}/`, function (pokemon, status) {});
-        return pokemon[0];
-    } catch {
-        console.log("Pokemon does not exist!")
-    }
-}
-
 const d = new Date();
 document.getElementById("demo").innerHTML = d.toDateString();
+
 async function loadProfile() {
     let data = {
         userId: userId,
@@ -43,7 +23,9 @@ async function loadProfile() {
                 $("#current-points").text(data.points);
                 $("#needed-points").text(data.desired_reward_cost);
                 $("#avatar").attr("src", data.profile_img_url);
-                
+                let percentage = Math.min(Math.floor((data.points / data.desired_reward_cost) * 100), 100)
+                move(percentage);
+
             data.rewards_pending.forEach(async (reward, index) => {
                 console.log(reward);
                 
@@ -56,23 +38,6 @@ async function loadProfile() {
                         <p class="details">${reward.reward_desc}</p>
                     </div>`;
                 $("#pending-rewards").append(element);
-
-                /*order[0].cart.forEach(async (pokemon) => {
-                    let pokemonData = await getPokemonBasicDataById(pokemon.pokemonId)
-                    let entry = `
-                    <div class="thumbnail-container" style="text-align: center; display: inline-block">
-                        <img src="${pokemonData.sprite}" alt="${pokemonData.name}" style="width:100%"
-                            onclick="location.href='pokemon.html?id=${pokemonData.id}'" class="pokemon-image-thumb">
-                            <div class="row pokemon-buy-details">
-                            <h3 class="col card-price">${pokemonData.name}</h3>
-                            <h3 class="col card-price">$${pokemonData.price}</h3>
-                            <h3 class="col card-quantity" id="card-quantity-${pokemonData.id}">Qty: ${pokemon.quantity}</h3>
-                            <h3 class="col card-total-price"> Total: $${(pokemonData.price * pokemon.quantity).toFixed(2)}</h3>
-                        </div>
-                    </div>
-                    `;
-                    $(`#order-${index + 1}`).append(entry);
-                })*/
             });
         });
 }
@@ -98,12 +63,12 @@ async function loadTimelineHandler() {
     $("#timeline").append(text);
 }
 
-function move() {
+function move(percentage) {
     var elem = document.getElementById("myBar");   
     var width = 20;
     var id = setInterval(frame, 10);
     function frame() {
-      if (width >= 100) {
+      if (width >= percentage) {
         clearInterval(id);
       } else {
         width++; 
@@ -112,8 +77,5 @@ function move() {
       }
     }
   }
-  window.onload = function() {
-    move();
-  };
+
 loadProfile();
-//loadTimelineHandler();
