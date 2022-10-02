@@ -22,6 +22,8 @@ async function loadPokemonById(pokemonId) {
     }
 }
 
+const d = new Date();
+document.getElementById("demo").innerHTML = d.toDateString();
 async function loadProfile() {
     let data = {
         userId: userId,
@@ -92,5 +94,22 @@ async function loadTimelineHandler() {
     $("#timeline").append(text);
 }
 
+function move() {
+    var elem = document.getElementById("myBar");   
+    var width = 20;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+      } else {
+        width++; 
+        elem.style.width = width + '%'; 
+        elem.innerHTML = width * 1  + '%';
+      }
+    }
+  }
+  window.onload = function() {
+    move();
+  };
 loadProfile();
 //loadTimelineHandler();

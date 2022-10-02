@@ -29,17 +29,45 @@ text-align: center;
 h3{
   color: white;
 }
-
+h1{
+  text-align: center;
+  color: white;
+}
+#demo{
+  color: white;
+}
 
 i{
   color: #4895EF;
   font-size: 3rem;
   text-align: center;
-  margin: 0 0.5rem;
+  margin: 0 0.5id
+  rem;
 }
 
 i:hover {
   cursor: pointer;
+}
+.score{
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+}
+.left{
+  color: white;
+  float: left;
+  margin-left: 8%;
+}
+.right{
+  color: white;
+  float: right;
+  margin-right: 8%;
+}
+.awards{
+  padding-bottom: 70px;
+}
+.container{
+  color: white;
 }
 .navbar-brand{
   margin-bottom: 10px;
