@@ -1,6 +1,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  background-color: #0F2540;
 }
 .hover\:w-full:hover {
   width: 100%;
