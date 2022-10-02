@@ -60,7 +60,7 @@ async function loadRewards() {
     }).then(response => response.json()).then(async (data) => {
         data.forEach(reward => {
             let element = `
-                <div class="w-full inline-flex rounded-md shadow-sm justify-center" role="group">
+                <div class="w-full inline-flex rounded-md justify-center" role="group">
                     <button type="button"
                         class="py-2 px-4 text-sm font-medium text-white bg-blue-700 rounded-l-lg border cursor-default border-gray-900 ">
                         ${reward.reward_cost}
@@ -71,7 +71,7 @@ async function loadRewards() {
                     </button>
                     <button type="button"
                         class="py-2 px-4 text-sm font-medium text-gray-900 bg-green-400 rounded-r-md border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
-                        ${reward.reward_cost > "Redeem"}
+                        ${reward.reward_cost > getPoints() ? "Select" : "Redeem"}
                     </button>
                 </div>`;
 

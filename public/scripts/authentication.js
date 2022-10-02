@@ -7,6 +7,10 @@ function isAdmin() {
     return sessionStorage.getItem("isAdmin") === "true"
 }
 
+function getPoints() {
+    return sessionStorage.getItem("points")
+}
+
 function loadAdminLink() {
     if (isAdmin()) {
         let element = `
