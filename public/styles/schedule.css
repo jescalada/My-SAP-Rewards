@@ -1,3 +1,5 @@
+@import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
 /*
 ! tailwindcss v3.1.8 | MIT License | https://tailwindcss.com
 */
@@ -554,7 +556,28 @@ video {
 .container {
   width: 100%;
 }
-
+i{
+  color: #4895EF;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0 0.5rem;
+}
+i:hover {
+  cursor: pointer;
+}
+.navbar-brand{
+  margin-bottom: 10px;
+}
+.navbar {
+  background-color: white;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @media (min-width: 480px) {
   .container {
     max-width: 480px;
