@@ -37,9 +37,10 @@ async function loadRewards() {
         }
     }).then(response => response.json()).then(async (data) => {
         data.forEach(reward => {
+            let canRedeem = reward.reward_cost > getPoints();
             let element = `
                 <div class="w-full inline-flex rounded-md justify-center" role="group">
-                    <button type="button"
+                    <button type="button" 
                         class="py-2 px-4 text-sm font-medium text-white bg-blue-700 rounded-l-lg border cursor-default border-gray-900 ">
                         ${reward.reward_cost}
                     </button>
@@ -47,9 +48,11 @@ async function loadRewards() {
                         class=" py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-900  dark:border-white dark:text-white cursor-default">
                         ${reward.reward_name}
                     </button>
-                    <button type="button"
+                    <button type="button" onclick="${canRedeem ?
+                        "redeem('" + reward.reward_name + "', " + reward.reward_cost + ')' :
+                        "select('" + reward.reward_name + "', " + reward.reward_cost + ')'}"
                         class="py-2 px-4 text-sm font-medium text-gray-900 bg-green-400 rounded-r-md border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
-                        ${reward.reward_cost > getPoints() ? "Select" : "Redeem"}
+                        ${canRedeem ? "Redeem" : "Select"}
                     </button>
                 </div>`;
 
@@ -76,6 +79,42 @@ function move(percentage) {
         width++; 
         elem.style.width = width + '%'; 
         elem.innerHTML = width * 1  + '%';
-      }
     }
   }
+}
+
+async function redeem(rewardName, rewardCost) {
+    let data = {
+        userId: userId,
+        rewardName: rewardName,
+        rewardCost: rewardCost
+    }
+
+    fetch('/redeem', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }).then(response => response.json()).then(async (data) => {
+        console.log(data);
+    });
+}
+
+async function select(rewardName, rewardCost) {
+    let data = {
+        userId: userId,
+        rewardName: rewardName,
+        rewardCost: rewardCost
+    }
+
+    fetch('/select', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }).then(response => response.json()).then(async (data) => {
+        console.log(data);
+    });
+}
