@@ -331,7 +331,7 @@ app.post('/deleteuser', async (req, res) => {
     }   
 })
 
-async function redeem(userId, rewardName, rewardCost) {
+async function select(userId, rewardName, rewardCost) {
     let reward = await rewardsModel.find({
         reward_name: rewardName
     });
@@ -339,13 +339,9 @@ async function redeem(userId, rewardName, rewardCost) {
     await usersModel.updateOne({
         user_id: userId
     }, {
-        $inc: {
-            points: rewardCost * -1
-        },
-        $push: {
-            rewards_pending: reward[0]
-        }
+        desired_reward_cost: rewardCost
     });
+    return "{success: true}";
 }
 
 async function redeem(userId, rewardName, rewardCost) {
@@ -353,7 +349,7 @@ async function redeem(userId, rewardName, rewardCost) {
         reward_name: rewardName
     });
     
-    await usersModel.updateOne({
+    let user = await usersModel.updateOne({
         user_id: userId
     }, {
         $inc: {
@@ -363,6 +359,7 @@ async function redeem(userId, rewardName, rewardCost) {
             rewards_pending: reward[0]
         }
     });
+    return `{ new_point_balance: ${user.points - rewardCost} }`;
 }
 
 async function loadDate(dateNumber, location) {
