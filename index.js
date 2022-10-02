@@ -123,6 +123,7 @@ app.post('/login', async (req, res) => {
         if (user) {
             req.session.user = user
             req.session.isAdmin = user.isAdmin
+            req.session.points = user.points
         }
     })
     req.session.authenticated = req.session.user != null
