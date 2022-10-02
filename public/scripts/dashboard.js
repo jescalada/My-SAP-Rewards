@@ -12,7 +12,10 @@ async function loadPoints() {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
+
         $("#current-points").text(data.points);
+        sessionStorage.setItem("points", data.points);
+
         $("#desired-points").text(data.desired_reward_cost);
         move(Math.min(Math.floor((data.points / data.desired_reward_cost) * 100), 100));
         data.rewards_pending.forEach(async (reward, index) => {
@@ -66,8 +69,6 @@ async function loadDashboard() {
     await loadRewards();
 }
 
-loadDashboard();
-
 function move(percentage) {
     var elem = document.getElementById("myBar");   
     var width = 20;
@@ -97,6 +98,7 @@ async function redeem(rewardName, rewardCost) {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
+        sessionStorage.setItem("points", data.new_point_balance);
         window.location.href = "/profile";
     });
 }
@@ -115,6 +117,8 @@ async function select(rewardName, rewardCost) {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
-        console.log(data);
+        window.location.href = "/";
     });
 }
+
+loadDashboard();

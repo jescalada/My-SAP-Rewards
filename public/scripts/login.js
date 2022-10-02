@@ -16,6 +16,7 @@ function login() {
             sessionStorage.setItem("userId", data.user.user_id);
             sessionStorage.setItem("isAdmin", data.user.isAdmin);
             sessionStorage.setItem("authenticated", data.success);
+            sessionStorage.setItem("full_name", data.user.full_name);
             sessionStorage.setItem("points", data.user.points);
             window.location.href = '/profile'
         } else {

@@ -11,6 +11,10 @@ function getPoints() {
     return sessionStorage.getItem("points")
 }
 
+function getFullName() {
+    return sessionStorage.getItem("full_name")
+}
+
 function loadAdminLink() {
     if (isAdmin()) {
         let element = `
