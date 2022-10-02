@@ -59,7 +59,7 @@ const rewardsSchema = new mongoose.Schema({
 const rewardsModel = mongoose.model("rewards", rewardsSchema);
 
 const calendarDaysSchema = new mongoose.Schema({
-    date: Date,
+    date: String,
     location: String,
     user_id: [Number]
 }, {
@@ -285,8 +285,8 @@ app.post('/select', async (req, res) => {
     res.json(await select(req.body.userId, req.body.rewardName, req.body.rewardCost))
 })
 
-app.post('/addtocart', async (req, res) => {
-    res.json(await updateCart(req.body.userId, req.body.quantity, req.body.pokemonId))
+app.post('/loaddate', async (req, res) => {
+    res.json(await loadDate(req.body.dateNumber, req.body.location))
 })
 
 app.post('/placeorder', async (req, res) => {
@@ -346,6 +346,37 @@ async function redeem(userId, rewardName, rewardCost) {
             rewards_pending: reward[0]
         }
     });
+}
+
+async function redeem(userId, rewardName, rewardCost) {
+    let reward = await rewardsModel.find({
+        reward_name: rewardName
+    });
+    
+    await usersModel.updateOne({
+        user_id: userId
+    }, {
+        $inc: {
+            points: rewardCost * -1
+        },
+        $push: {
+            rewards_pending: reward[0]
+        }
+    });
+}
+
+async function loadDate(dateNumber, location) {
+    let calendarDay = await calendarDaysModel.find({
+        // The date is hard-coded for now
+        date: "09-0" + dateNumber + "-2022"
+    });
+    
+    console.log(calendarDay);
+    if (calendarDay[0] == undefined) {
+        return "{}";
+    }
+
+    return calendarDay[0];
 }
 
 async function addLoss(userId, difficulty, points) {
