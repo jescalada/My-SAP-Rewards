@@ -59,8 +59,9 @@ header{
   padding: 30px;
 }
 
-/* Style the links inside the navigation bar */
-
+.scoreContainer{
+  flex-direction: row;
+}
 
 /* Change the color of links on hover */
 .navbar a:hover {
@@ -116,13 +117,7 @@ header{
   padding-top: 12px;
 }
 
-#header {
-  display: flex;
-  height: 73.075px;
-  justify-content: space-between;
-  align-items: center;
 
-}
 
 .overlay {
   /* Height & width depends on how you want to reveal the overlay (see JS below) */
