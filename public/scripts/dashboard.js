@@ -97,7 +97,7 @@ async function redeem(rewardName, rewardCost) {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
-        console.log(data);
+        window.location.href = "/profile";
     });
 }
 

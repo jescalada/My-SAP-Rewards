@@ -1,3 +1,5 @@
+let userId = getUserId();
+
 async function loadDate(dateNumber) {
     let data = {
         dateNumber: dateNumber,
@@ -12,13 +14,17 @@ async function loadDate(dateNumber) {
         }
     }).then(response => response.json()).then(async (data) => {
         $("#day-number").text(dateNumber);
+        $("#day-number1").text("0" + dateNumber);
 
         if (!data.users) {
             $("#attendees-box").empty();
+            $("#day-status").text("Remote");
             return;
         }
 
         $("#attendees-box").empty();
+        $("#day-status").text("Remote");
+        
         data.users.forEach(user => {
             let element = `
                 <div class="border-b pb-4 border-gray-400 border-dashed">
@@ -26,7 +32,9 @@ async function loadDate(dateNumber) {
                     <a tabindex="0" class="focus:outline-none text-lg font-medium leading-5 text-gray-800 dark:text-gray-100 mt-2">${user.full_name}</a>
                 </div>
             `;
-            
+            if (user.user_id == userId) {        
+                $("#day-status").text("In-Person");
+            }
             $("#attendees-box").append(element);
         });
     })
