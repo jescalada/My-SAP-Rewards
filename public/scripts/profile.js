@@ -36,10 +36,14 @@ async function loadProfile() {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
-                $("#username").text(data.username);
-                $("#username2").text(data.username);
-                $("#username3").text(data.username);
-                $("#username4").text(data.username);
+        console.log(data);
+                $("#username").text(data.full_name);
+                $("#username2").text(data.full_name);
+                $("#username3").text(data.full_name);
+                $("#current-points").text(data.points);
+                $("#needed-points").text(data.desired_reward_cost);
+                $("#avatar").attr("src", data.profile_img_url);
+                
             data.rewards_pending.forEach(async (reward, index) => {
                 console.log(reward);
                 
@@ -48,7 +52,7 @@ async function loadProfile() {
                 let element = `
                     <div class="order" id="order-${index + 1}" style="text-align: center">
                         <h3>${reward.reward_name}</h3>
-                        <h2>${dateTime[1] + " " + dateTime[2] + ", " + dateTime[3]}</h2>
+                        <img src="${reward.reward_img_url}" class="reward-img">
                         <p class="details">${reward.reward_desc}</p>
                     </div>`;
                 $("#pending-rewards").append(element);
