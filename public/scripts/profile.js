@@ -27,7 +27,7 @@ async function loadProfile() {
         userId: userId,
     }
 
-    fetch('/cart', {
+    fetch('/thisuser', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -37,19 +37,21 @@ async function loadProfile() {
                 $("#username").text(data.username);
                 $("#username2").text(data.username);
                 $("#username3").text(data.username);
-            data.past_orders.forEach(async (order, index) => {
-                let date = new Date(order[0].timestamp)
-                let dateTime = date.toString().split("GMT")
+                $("#username4").text(data.username);
+            data.rewards_pending.forEach(async (reward, index) => {
+                console.log(reward);
+                
+                let date = new Date(reward.redeem_date)
+                let dateTime = date.toString().split(" ")
                 let element = `
                     <div class="order" id="order-${index + 1}" style="text-align: center">
-                        <h3>Order id: #${index + 1}</h3>    
-                        <h2>${dateTime[0]}</h2>
-                        <p class="details">Total: $${order[0].total}</p>
-                        <h4>Items in Order #${index + 1}:</h4>
+                        <h3>${reward.reward_name}</h3>
+                        <h2>${dateTime[1] + " " + dateTime[2] + ", " + dateTime[3]}</h2>
+                        <p class="details">${reward.reward_desc}</p>
                     </div>`;
-                $("#past-orders").append(element);
+                $("#pending-rewards").append(element);
 
-                order[0].cart.forEach(async (pokemon) => {
+                /*order[0].cart.forEach(async (pokemon) => {
                     let pokemonData = await getPokemonBasicDataById(pokemon.pokemonId)
                     let entry = `
                     <div class="thumbnail-container" style="text-align: center; display: inline-block">
@@ -64,7 +66,7 @@ async function loadProfile() {
                     </div>
                     `;
                     $(`#order-${index + 1}`).append(entry);
-                })
+                })*/
             });
         });
 }
@@ -91,4 +93,4 @@ async function loadTimelineHandler() {
 }
 
 loadProfile();
-loadTimelineHandler();
+//loadTimelineHandler();
