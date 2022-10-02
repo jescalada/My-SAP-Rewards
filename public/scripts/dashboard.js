@@ -17,6 +17,8 @@ async function loadPoints() {
         sessionStorage.setItem("points", data.points);
 
         $("#desired-points").text(data.desired_reward_cost);
+
+        $("#until-next-reward").text(data.desired_reward_cost - data.points);
         move(Math.min(Math.floor((data.points / data.desired_reward_cost) * 100), 100));
         data.rewards_pending.forEach(async (reward, index) => {
             let date = new Date(reward.redeem_date)
