@@ -15,6 +15,7 @@ module.exports = {
         blue: '#0F2540',
       }
     },
+    
   },
   plugins: [],
 }
