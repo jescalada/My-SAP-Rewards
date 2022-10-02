@@ -117,6 +117,7 @@ function authenticateAndCheckIfAdmin(req, res, next) {
     }
 }
 
+// Logs in a user by authenticating
 app.post('/login', async (req, res) => {
     await authenticateLogin(req.body.username, req.body.password).then(user => {
         if (user) {
@@ -132,6 +133,7 @@ app.post('/login', async (req, res) => {
     })
 })
 
+// Register a user into the database
 app.post('/register', async (req, res) => {
     let userId = 100000000 + Math.floor(Math.random() * 10000);
     console.log(req.body.isAdmin)
@@ -181,8 +183,10 @@ app.get('/users/:userId', (req, res) => {
     });
 })
 
-app.get('/rewards/', async (req, res) => {
-
+// Returns the whole list of rewards from the database
+app.post('/rewardlist', async (req, res) => {
+    const rewards = await rewardsModel.find({ })
+    return res.json(rewards);
 })
 
 app.get('/name/:pokemonName', async (req, res) => {
@@ -264,18 +268,18 @@ app.get('/ability/:pokemonAbility', async (req, res) => {
     });
 })
 
-app.get('/timeline/:userId', async (req, res) => {
+app.get('/pendingrewards/:userId', async (req, res) => {
     const user = await usersModel.find({
         user_id: req.params.userId
     })
-    return res.json(user[0].timeline);
+    return res.json(user[0].rewards_pending);
 })
 
-app.get('/gametimeline/:userId', async (req, res) => {
+app.get('/redeemedrewards/:userId', async (req, res) => {
     const user = await usersModel.find({
         user_id: req.params.userId
     })
-    return res.json(user[0].game_timeline);
+    return res.json(user[0].rewards_redeemed);
 })
 
 app.post('/addwin', async (req, res) => {
@@ -298,7 +302,7 @@ app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
 
-app.post('/cart', async (req, res) => {
+app.post('/thisuser', async (req, res) => {
     const user = await usersModel.find({
         user_id: req.body.userId
     })
@@ -308,6 +312,11 @@ app.post('/cart', async (req, res) => {
 app.post('/userlist', async (req, res) => {
     const users = await usersModel.find({ })
     return res.json(users);
+})
+
+app.post('/rewardslist', async (req, res) => {
+    const rewards = await rewardsModel.find({ })
+    return res.json(rewards);
 })
 
 app.post('/deleteuser', async (req, res) => {

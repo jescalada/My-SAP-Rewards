@@ -1,11 +1,43 @@
 
-
-
+@import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.hover\:w-full:hover {
+  width: 100%;
+}
+.group:hover .group-hover\:w-full {
+  width: 100%;
+}
+.group:hover .group-hover\:inline-block {
+  display: inline-block;
+}
+.group:hover .group-hover\:flex-grow {
+  flex-grow: 1;
+}
+main{
+  padding: none;
+text-align: center;
+background-color: #B8D3F2;
+}
 h3{
   color: white;
 }
 
 
+i{
+  color: #4895EF;
+  font-size: 3rem;
+  text-align: center;
+  margin: 0 0.5rem;
+}
+.score{
+  padding: 80px;
+}
+i:hover {
+  cursor: pointer;
+}
 .navbar-brand{
   margin-bottom: 10px;
 }
@@ -19,9 +51,17 @@ h3{
   align-items: center;
   justify-content: center;
 }
+header{
+  background-color: #0F2540;
+  text-align: center;
+  color: white;
+  size: 100px;
+  padding: 30px;
+}
 
-/* Style the links inside the navigation bar */
-
+.scoreContainer{
+  flex-direction: row;
+}
 
 /* Change the color of links on hover */
 .navbar a:hover {
@@ -77,13 +117,7 @@ h3{
   padding-top: 12px;
 }
 
-#header {
-  display: flex;
-  height: 73.075px;
-  justify-content: space-between;
-  align-items: center;
 
-}
 
 .overlay {
   /* Height & width depends on how you want to reveal the overlay (see JS below) */

@@ -1,28 +1,8 @@
-var userId = getUserId();
-var isAdmin = isAdmin();
+async function loadRewards() {
 
-// Gets the basic data needed to display a pokemon to the client.
-async function getPokemonBasicDataById(id) {
-    let pokemon = await loadPokemonById(id);
-    let result = {
-        id: pokemon.id,
-        name: pokemon.name,
-        sprite: pokemon.sprite,
-        price: pokemon.price
-    };
-    return result;
 }
 
-async function loadPokemonById(pokemonId) {
-    try {
-        const pokemon = await $.get(`/pokemon/${pokemonId}/`, function (pokemon, status) {});
-        return pokemon[0];
-    } catch {
-        console.log("Pokemon does not exist!")
-    }
-}
-
-async function loadProfile() {
+async function loadPoints() {
     let data = {
         userId: userId,
     }
@@ -34,8 +14,8 @@ async function loadProfile() {
             'Content-type': 'application/json'
         }
     }).then(response => response.json()).then(async (data) => {
-                $("#username").text(data.username);
-                $("#username2").text(data.username);
+                data.points;
+                data.desired_reward_cost;
                 $("#username3").text(data.username);
                 $("#username4").text(data.username);
             data.rewards_pending.forEach(async (reward, index) => {
@@ -71,26 +51,56 @@ async function loadProfile() {
         });
 }
 
-async function loadTimeline() {
-    try {
-        const timeline = await $.get(`/timeline/${userId}`, function (timeline, status) {});
-        return timeline;
-    } catch {
-        return null;
-    }
-}
+async function loadRewards() {
+    fetch('/rewardslist', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }).then(response => response.json()).then(async (data) => {
+        data.forEach(reward => {
+            let element = `
+                <div class="w-full inline-flex rounded-md shadow-sm justify-center" role="group">
+                    <button type="button"
+                        class="py-2 px-4 text-sm font-medium text-white bg-blue-700 rounded-l-lg border cursor-default border-gray-900 ">
+                        ${reward.reward_cost}
+                    </button>
+                    <button type="button"
+                        class=" py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-900  dark:border-white dark:text-white cursor-default">
+                        ${reward.reward_name}
+                    </button>
+                    <button type="button"
+                        class="py-2 px-4 text-sm font-medium text-gray-900 bg-green-400 rounded-r-md border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                        Redeem
+                    </button>
+                </div>`;
 
-async function loadTimelineHandler() {
-    const timeline = await loadTimeline()
-    $("#timeline").empty();
-    let text = ""
-    timeline.forEach(object => {
-        entry = object.entry
-        let timeData = new Date(entry.timestamp).toString().split("GMT")
-        text += `<li>Query: ${entry.query}<br>${timeData[0]}</li>`
+            $("#reward-box").append(element);
+        });
     });
-    $("#timeline").append(text);
 }
 
-loadProfile();
-//loadTimelineHandler();
+async function loadDashboard() {
+    // await loadPoints();
+    await loadRewards();
+}
+
+loadDashboard();
+
+function move() {
+    var elem = document.getElementById("myBar");   
+    var width = 20;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 90) {
+        clearInterval(id);
+      } else {
+        width++; 
+        elem.style.width = width + '%'; 
+        elem.innerHTML = width * 1  + '%';
+      }
+    }
+  }
+  window.onload = function() {
+    move();
+  };
